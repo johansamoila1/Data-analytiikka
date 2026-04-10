@@ -30,10 +30,10 @@
       </ul>
       <p style="color: #334155">
         Mediaani keskiarvon sijaan: Elokuva-alan taloudellinen data noudattaa vahvasti vinoutunutta
-        jakaumaa (heavy-tailed distribution). Koska yksittäiset jättihitit (kuten Avengers tai
-        Avatar) vääristäisivät puhtaan keskiarvon täysin käyttökelvottomaksi, sovellus käyttää
-        taloudellisissa vertailumittareissa poikkeuksetta mediaania. Se antaa realistisimman kuvan
-        kunkin budjettiluokan todellisesta keskivertoelokuvasta.
+        jakauman. Koska yksittäiset jättihitit (kuten Avengers tai Avatar) vääristäisivät puhtaan
+        keskiarvon täysin käyttökelvottomaksi, sovellus käyttää taloudellisissa vertailumittareissa
+        poikkeuksetta mediaania. Se antaa realistisimman kuvan kunkin budjettiluokan todellisesta
+        keskivertoelokuvasta.
       </p>
     </mat-card-content>
   </mat-card>
@@ -57,15 +57,14 @@
       </p>
       <ul style="margin-bottom: 1.5rem; color: #334155">
         <li>
-          <strong>Teatterijako (Theatrical Split):</strong> Sovellus olettaa alan standardin
-          mukaisesti, että elokuvateatterit (exhibitors) pitävät keskimäärin noin 50 %
-          lipputuloista, jättäen loput studiolle.
+          Sovellus olettaa alan standardin mukaisesti, että elokuvateatterit pitävät keskimäärin
+          noin 50 % lipputuloista, jättäen loput studiolle.
         </li>
         <li>
-          <strong>Break-even -raja (2.5x):</strong> Koska ilmoitettu tuotantobudjetti ei koskaan
-          sisällä markkinointi- ja jakelukuluja (P&A), elokuvan on yleisen nyrkkisäännön mukaan
-          tuotettava teattereissa vähintään 2.5-kertaisesti oman budjettinsa verran päästäkseen
-          omilleen. Tätä rajaa käytetään sovelluksen referenssipisteenä.
+          <strong>Break-even -raja (2,5x):</strong> Koska ilmoitettu tuotantobudjetti ei koskaan
+          sisällä markkinointi- ja jakelukuluja (P&A), elokuvan on yleisen säännön mukaan tuotettava
+          teattereissa vähintään 2,5-kertaisesti oman budjettinsa verran päästäkseen omilleen. Tätä
+          rajaa käytetään sovelluksen referenssipisteenä.
         </li>
       </ul>
     </mat-card-content>
@@ -96,9 +95,9 @@
           vertailun samassa kuvaajassa suhteellisen kasvu-uran mukaisesti.
         </li>
         <li>
-          <strong>2.5x Break-even -referenssiviiva:</strong> Kuvaajan poikki kulkee punainen
+          <strong>2,5x Break-even -referenssiviiva:</strong> Kuvaajan poikki kulkee punainen
           vinoviiva. Pisteet viivan yläpuolella ovat todennäköisesti taloudellisesti kannattavia
-          (tuottokerroin > 2.5x), kun taas viivan alapuolelle jäävät elokuvat ovat tehneet tappiota
+          (tuottokerroin > 2,5x), kun taas viivan alapuolelle jäävät elokuvat ovat tehneet tappiota
           teatterikierroksellaan.
         </li>
       </ul>
@@ -124,7 +123,7 @@
         -1.0 ... +1.0.
       </p>
       <ul style="margin-bottom: 1rem; color: #334155">
-        <li>+1.0 tarkoittaa täydellistä yksimielisyyttä ja 0.0 täydellistä yhteyden puutetta.</li>
+        <li>+1,0 tarkoittaa täydellistä yksimielisyyttä ja 0,0 täydellistä yhteyden puutetta.</li>
         <li>
           <strong>0 % arvosanat:</strong> Jotta malli ei kärsi valikoimisharhasta, myös armottomat 0
           % tai 0/100 pisteen arvosanat on otettu mukaan korrelaatiomatriisiin.
@@ -184,11 +183,11 @@
           Tuottokerroin. Malli mittaa suoraan pääoman tehokkuutta ja paljastaa vähenevän rajatuoton
           lain elokuva-alalla. Toisin sanoen kun budjetti moninkertaistuu, moninkertaistuuko myös
           tuottokerroin, vai romahtaako sijoitetun pääoman suhteellinen tuotto? <br /><br />
-          Eloonjäämisharhan poisto: Mallin tilastollinen arvo perustuu siihen, että se ei käsittele
-          vain voittajia. Kaikki tappiolliset elokuvat, mukaan lukien massiiviset taloudelliset
-          floppaukset, on pakotettu mukaan laskentaan (tarvittaessa asettamalla nollatuottoisen
-          elokuvan kertoimeksi alarajan 0.01), jotta regressioyhtälö heijastaa alan todellisuutta
-          eikä vain parhaiten selviytyneiden illuusiota.
+          Mallin tilastollinen arvo perustuu siihen, että se ei käsittele vain voittajia. Kaikki
+          tappiolliset elokuvat, mukaan lukien massiiviset taloudelliset floppaukset, on pakotettu
+          mukaan laskentaan (tarvittaessa asettamalla nollatuottoisen elokuvan kertoimeksi alarajan
+          0,01), jotta regressioyhtälö heijastaa alan todellisuutta eikä vain parhaiten
+          selviytyneiden illuusiota.
         </p>
       </div>
     </mat-card-content>
@@ -207,10 +206,7 @@
       >
         6. Data-aineistot
       </h3>
-      <p style="color: #334155">
-        Sovelluksen laskentamoottori käyttää analyyseissään kahta eri datalähdettä varmistaakseen
-        tilastollisen eheyden:
-      </p>
+      <p style="color: #334155">Sovellus käyttää analyyseissään kahta eri datalähdettä</p>
 
       <div style="margin-top: 1.5rem">
         <h4 style="font-size: 1.1rem; color: #1e293b">Laajennettu data (Extended)</h4>
