@@ -1,0 +1,46 @@
+<div class="view-section">
+  <mat-card class="analysis-card no-margin-top">
+    <mat-card-content>
+      <div class="section-header">
+        <h3 class="section-title">Vuositrendit</h3>
+        <div
+          class="info-icon-small"
+          title="Käyrät näyttävät budjettien ja arvosanojen kehityksen vuosittain. Budjettikäyrät perustuvat laajennettuun dataan, arvosanakäyrä arvosteludataan. Käyrät ovat vuosittaisia mediaaneja. Voit valita näytettävän budjettikategorian (Indie, Mid-budget tai Blockbuster) yläpuolelta."
+        >
+          i
+        </div>
+      </div>
+      <p class="section-subtitle">Budjettien ja arvosanojen kehitys vuosittain</p>
+      <div class="view-controls">
+        <mat-form-field appearance="outline" class="budget-view-select">
+          <mat-label>Näytä budjettikategoria</mat-label>
+          <mat-select [(ngModel)]="budgetViewMode" (selectionChange)="onBudgetViewModeChange()">
+            @for (option of budgetViewOptions; track option.value) {
+            <mat-option [value]="option.value">{{ option.label }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="chart-container" style="height: 55vh">
+        <canvas #trendChart></canvas>
+      </div>
+      <div class="legend-box">
+        <strong>Datalähteet:</strong>
+        <ul>
+          <li>
+            <strong>Arvosana:</strong> Arvosteludata ({{ movieCountInfo().rated }} elokuvaa vuosilta
+            {{ movieCountInfo().ratedYearRange }})
+          </li>
+          <li>
+            <strong>Budjetti (Indie / Mid-budget / Blockbuster):</strong> Laajennettu data ({{
+            movieCountInfo().extended }} elokuvaa vuosilta {{ movieCountInfo().extendedYearRange }})
+          </li>
+        </ul>
+        <p class="calculation-note">
+          * Käyrät = vuosittainen mediaani | Arvosana näkyy vain vuosilta joilta löytyy
+          arvostelutietoja
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

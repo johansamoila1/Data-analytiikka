@@ -1,0 +1,243 @@
+<div class="dashboard-container">
+  <mat-card class="filters-card">
+    <mat-card-content class="filters-container">
+      <form [formGroup]="filterForm" class="filters-grid">
+        
+        <div class="left-column">
+          <div class="search-section">
+            <mat-form-field appearance="outline" class="filter-field autocomplete-field full-width">
+              <mat-label>Etsi elokuva</mat-label>
+              <input
+                type="text"
+                matInput
+                [formControl]="movieSearchControl"
+                [matAutocomplete]="auto"
+                (input)="onSearchInput($event)"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFn"
+                (optionSelected)="onMovieSelected($event)"
+              >
+                <mat-option *ngFor="let movie of filteredMovieOptions" [value]="movie">
+                  {{ movie.title }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            @if (selectedMovies.length > 0) {
+            <div class="selected-movies-chips">
+              @for (movie of selectedMovies; track movie.title) {
+              <span class="movie-chip">
+                {{ movie.title }}
+                <button type="button" class="chip-remove" (click)="removeSelectedMovie(movie)">
+                  ×
+                </button>
+              </span>
+              }
+              <button type="button" class="clear-all-btn" (click)="clearAllSelectedMovies()">
+                Tyhjennä kaikki
+              </button>
+            </div>
+            }
+          </div>
+
+          <div class="genre-section">
+            <mat-form-field appearance="outline" class="filter-field genre-select">
+              <mat-label>Genret</mat-label>
+              <mat-select formControlName="selectedGenres" multiple>
+                <mat-option *ngFor="let genre of genreOptions" [value]="genre.value">
+                  {{ genre.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button type="button" class="reset-button clear-button" (click)="clearGenres()">
+              Tyhjennä
+            </button>
+          </div>
+        </div>
+
+        
+        <div class="right-column">
+          <div class="filter-section">
+            <div class="slider-label">
+              Minimiarvosana ({{ filterForm.value.minRating | number:'1.0-0' }}/100)
+            </div>
+            <mat-slider min="0" max="100" step="5" discrete class="full-width-slider">
+              <input matSliderThumb formControlName="minRating" />
+            </mat-slider>
+          </div>
+
+          <div class="filter-section">
+            <div class="slider-label">
+              Julkaisuvuosi ({{ filterForm.value.minYear }} – {{ filterForm.value.maxYear }})
+            </div>
+            <mat-slider min="2000" max="2020" step="1" discrete class="full-width-slider">
+              <input matSliderStartThumb formControlName="minYear" />
+              <input matSliderEndThumb formControlName="maxYear" />
+            </mat-slider>
+          </div>
+
+          <div class="filter-section">
+            <div class="slider-label">Budjetti (käytä säätimiä tai kirjoita arvo)</div>
+            <mat-slider min="0" max="100" step="1" class="full-width-slider">
+              <input matSliderStartThumb formControlName="sliderMinVal" />
+              <input matSliderEndThumb formControlName="sliderMaxVal" />
+            </mat-slider>
+
+            <div class="budget-inputs">
+              <mat-form-field appearance="outline" class="budget-input">
+                <mat-label>Min (USD)</mat-label>
+                <input matInput type="number" formControlName="minBudgetLiteral" />
+              </mat-form-field>
+              <span class="budget-dash">–</span>
+              <mat-form-field appearance="outline" class="budget-input">
+                <mat-label>Max (USD)</mat-label>
+                <input matInput type="number" formControlName="maxBudgetLiteral" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="reset-section">
+          <button type="button" class="reset-button reset-full" (click)="resetFilters()">
+            Nollaa suodattimet
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <nav class="analysis-nav">
+    <button
+      class="nav-item"
+      [class.active]="activeView() === 'overview'"
+      (click)="setView('overview')"
+    >
+      <span class="nav-icon"></span> Yleisnäkymä
+    </button>
+    <button class="nav-item" [class.active]="activeView() === 'genres'" (click)="setView('genres')">
+      <span class="nav-icon"></span> Genret
+    </button>
+    <button
+      class="nav-item"
+      [class.active]="activeView() === 'ratings'"
+      (click)="setView('ratings')"
+    >
+      <span class="nav-icon"></span> Arvostelut
+    </button>
+    <button class="nav-item" [class.active]="activeView() === 'trends'" (click)="setView('trends')">
+      <span class="nav-icon"></span> Trendit
+    </button>
+    <button
+      class="nav-item"
+      [class.active]="activeView() === 'regression'"
+      (click)="setView('regression')"
+    >
+      <span class="nav-icon"></span> Mallinnus
+    </button>
+    <button
+      class="nav-item"
+      [class.active]="activeView() === 'profitability'"
+      (click)="setView('profitability')"
+    >
+      <span class="nav-icon"></span> Kannattavuus
+    </button>
+    <button class="nav-item" [class.active]="activeView() === 'info'" (click)="setView('info')">
+      <span class="nav-icon"></span> Dokumentaatio
+    </button>
+  </nav>
+
+  <main class="main-content">
+    <div class="view-container">
+      <app-overview-analysis
+        [class.hidden-view]="activeView() !== 'overview'"
+        [filteredMovies]="filteredMovies"
+        [extendedMovies]="filteredExtendedMovies"
+        [selectedMovie]="selectedMovie"
+        [selectedMovies]="selectedMovies"
+        [datasetMaxBudget]="datasetMaxBudget"
+        [selectedGenres]="filterForm.get('selectedGenres')?.value"
+        (movieSelected)="onInternalMovieSelected($event)"
+      >
+      </app-overview-analysis>
+
+      <app-genre-analysis
+        [class.hidden-view]="activeView() !== 'genres'"
+        [extendedMovies]="filteredExtendedMovies"
+        [genreOptions]="genreOptions"
+        [selectedGenres]="filterForm.get('selectedGenres')?.value"
+      >
+      </app-genre-analysis>
+
+      <app-rating-comparison
+        [class.hidden-view]="activeView() !== 'ratings'"
+        [filteredMovies]="filteredMovies"
+      >
+      </app-rating-comparison>
+
+      <app-year-trends
+        [class.hidden-view]="activeView() !== 'trends'"
+        [filteredMovies]="filteredMovies"
+        [extendedMovies]="filteredExtendedMovies"
+        [minYear]="filterForm.value.minYear"
+        [maxYear]="filterForm.value.maxYear"
+        [selectedGenres]="filterForm.value.selectedGenres"
+      >
+      </app-year-trends>
+
+      <app-regression-analysis
+        [class.hidden-view]="activeView() !== 'regression'"
+        [filteredMovies]="filteredMovies"
+      >
+      </app-regression-analysis>
+
+      <app-profitability-analysis
+        [class.hidden-view]="activeView() !== 'profitability'"
+        [filteredMovies]="filteredMovies"
+        [extendedMovies]="filteredExtendedMovies"
+      >
+      </app-profitability-analysis>
+
+      <app-analysis-info [class.hidden-view]="activeView() !== 'info'"></app-analysis-info>
+    </div>
+
+    <app-verdict-card [movie]="selectedMovie" *ngIf="activeView() !== 'info'"></app-verdict-card>
+
+    <div class="stats-overview" *ngIf="activeView() !== 'info'">
+      <div class="info-container">
+        <span class="info-icon">i</span>
+        <div class="info-tooltip">
+          <div class="tooltip-title">Analyysien perusteet</div>
+          <div class="tooltip-content">
+            <p>
+              <strong>Yleiskatsaus:</strong> Hajontakuvio näyttää budjetin ja tuoton välisen
+              suhteen. Pisteet ovat väreillä merkittygenreittäin.
+            </p>
+            <p>
+              <strong>Vuositrendit:</strong> Budjettikäyrät perustuvat laajennettuun dataan (12132
+              elokuvaa). Arvosanakäyrä perustuu arvosteludataan (2652 elokuvaa). Käyrät ovat
+              vuosittaisia mediaaneja.
+            </p>
+            <p>
+              <strong>Regressioanalyysi:</strong> Lineaarinen regressio ennakoi tuottoa budjetin
+              perusteella. R² kertoo mallin selitysvoiman.
+            </p>
+            <p>
+              <strong>Kannattavuusanalyysi:</strong> ROI lasketaan kaavalla (tuotto - budjetti) /
+              budjetti. Positiivinen ROI = kannattava.
+            </p>
+            <p>
+              <strong>Genre-analyysi:</strong> Genrejen vertailu budjettien ja tuottojen mukaan.
+              Mediaani-summat per genre.
+            </p>
+            <p>
+              <strong>Arvosanavertailu:</strong> Eri arvostelulähteiden (IMDb, Metacritic, Rotten
+              Tomatoes, Letterboxd) välinen korrelaatio.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

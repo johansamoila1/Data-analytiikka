@@ -1,0 +1,68 @@
+<div class="view-section">
+  <div class="section-header">
+    <h3 class="section-title">Budjetti vs Tuotto</h3>
+    <div class="info-icon-small" title="Hajontakuvio näyttää elokuvien budjetin ja tuoton välisen suhteen. Pisteet on värikoodattu genreittäin. X-akseli = budjetti ($M), Y-akseli = tuotto ($M).">
+      i
+    </div>
+  </div>
+  <p class="section-subtitle">
+    Elokuvien kannattavuus suodatetussa aineistossa ({{ filteredMovies.length }} elokuvaa)
+  </p>
+  <div class="chart-container">
+    <canvas #scatterChart></canvas>
+  </div>
+
+  <mat-card class="analysis-card">
+    <mat-card-content>
+      <div class="section-header">
+        <h3 class="section-title">Arvosanojen korrelaatiomatriisi</h3>
+        <div class="info-icon-small" title="Korrelaatiomatriisi näyttää eri arvostelulähteiden (IMDb, Metacritic, Rotten Tomatoes, Letterboxd) väliset yhteydet. Arvo 1 = täysin sama mielipide, -1 = täysin päinvastainen mielipide. Etäisyys nollasta kertoo yhteyden voimakkuuden: mitä kauempana nollasta, sitä vahvempi yhteys. Esim. 0,5 ja -0,5 ovat yhtä vahvoja yhteyksiä.">
+          i
+        </div>
+      </div>
+      <p class="section-subtitle">
+        Lähteiden väliset riippuvuudet ({{ correlationMovieCount() }} elokuvaa)
+      </p>
+      <table class="correlation-table">
+        <thead>
+          <tr>
+            <th class="corner-cell"></th>
+            @for (source of ratingSources; track source.key) {
+            <th class="header-cell">{{ source.shortLabel }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of correlationMatrix(); track $index; let i = $index) {
+          <tr>
+            <td class="row-header-cell">{{ ratingSources[i].shortLabel }}</td>
+            @for (value of row; track $index) {
+            <td
+              class="data-cell"
+              [style.background-color]="getCorrelationColor(value)"
+              [style.color]="getCorrelationTextColor(value)"
+            >
+              {{ value | number:'1.2-2' }}
+            </td>
+            }
+          </tr>
+          }
+        </tbody>
+      </table>
+      <div class="correlation-legend">
+        <span class="legend-item">
+          <span class="legend-color" style="background: rgba(59, 130, 246, 0.9)"></span>
+          Positiivinen (toinen kasvaa, toinen kasvaa)
+        </span>
+        <span class="legend-item">
+          <span class="legend-color" style="background: rgba(239, 68, 68, 0.9)"></span>
+          Negatiivinen (toinen kasvaa, toinen pienenee)
+        </span>
+        <span class="legend-item">
+          <span class="legend-color" style="background: rgba(150, 150, 170, 0.3)"></span>
+          Heikko yhteys (lähellä nollaa)
+        </span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

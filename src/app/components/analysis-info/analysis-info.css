@@ -1,0 +1,121 @@
+.info-view {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.7;
+}
+
+@media (min-width: 768px) {
+  .info-view {
+    padding: 2rem;
+  }
+}
+
+.info-title {
+  font-size: 2rem;
+  color: #111827;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.info-intro {
+  font-size: 1.1rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem;
+}
+
+.info-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  color: #1e40af;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  border-left: 4px solid #3b82f6;
+  padding-left: 1rem;
+}
+
+.method-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+@media (min-width: 768px) {
+  .method-card {
+    padding: 1.5rem;
+  }
+}
+
+.method-card h3 {
+  font-size: 1.15rem;
+  color: #111827;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.method-card p {
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+}
+
+.method-card ul {
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.method-card li {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+}
+
+.method-card strong {
+  color: #111827;
+}
+
+.interpretation {
+  background: #f0f9ff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+  margin-top: 1rem;
+}
+
+.formula {
+  background: #f3f4f6;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-family: monospace;
+  font-size: 1.1rem;
+  color: #1f2937;
+  margin: 1rem 0;
+  border: 1px solid #d1d5db;
+}
+
+.note {
+  background: #eff6ff;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+  font-size: 0.95rem;
+  color: #1e40af;
+}
+
+.method-card ul ul {
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.method-card ul ul li {
+  font-size: 0.95rem;
+}

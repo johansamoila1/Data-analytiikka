@@ -1,0 +1,32 @@
+<mat-card class="verdict-card" *ngIf="movie">
+  <mat-card-content class="verdict-content">
+    <div class="verdict-main">
+      <div class="verdict-header">
+        <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2>
+        <div class="elite-score-container" *ngIf="scores.eliteScore !== null">
+          <span class="elite-label">ELITE SCORE</span>
+          <span class="elite-value">{{ scores.eliteScore | number:'1.0-1' }}</span>
+        </div>
+      </div>
+
+      <div class="verdict-metrics">
+        <div class="metric-item">
+          <div class="metric-circle critic-circle">{{ movie.tomatometer_rating ?? '-' }}</div>
+          <span class="metric-label">RT Kriitikot</span>
+        </div>
+        <div class="metric-item">
+          <div class="metric-circle audience-circle">{{ scores.combinedAudienceScore ?? '-' }}</div>
+          <span class="metric-label">Yleisö</span>
+        </div>
+        <div class="metric-item">
+          <div class="metric-circle letterboxd-circle">{{ movie.letterbox_rating ?? '-' }}</div>
+          <span class="metric-label">Letterboxd</span>
+        </div>
+        <div class="metric-item">
+          <div class="metric-circle metacritic-circle">{{ movie.metascore ?? '-' }}</div>
+          <span class="metric-label">Metacritic</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

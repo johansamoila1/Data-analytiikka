@@ -1,0 +1,43 @@
+<div class="view-section">
+  <mat-card class="analysis-card no-margin-top">
+    <mat-card-content>
+      <div class="section-header">
+        <h3 class="section-title">Genre-analyysi</h3>
+        <div class="info-icon-small" title="Genre-analyysi näyttää eri genrejen mediaani-ROI:t. ROI = (Studio revenue - budjetti) / budjetti. Studio revenue = lipputulot * 0.5 (teatterisopimus). Taulukko näyttää kunkin genren elokuvamäärän ja mediaanituoton.">
+          i
+        </div>
+      </div>
+      <p class="section-subtitle">
+        Mediaani-ROI genreittäin ({{ movieCountInfo().totalRated }} elokuvaa)
+      </p>
+      <div class="chart-container" style="height: 45vh">
+        <canvas #genreChart></canvas>
+      </div>
+      @if (genreStats().length > 0) {
+      <div class="genre-stats-table">
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Genre</th>
+              <th>Lkm</th>
+              <th>Mediaani ROI</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (stat of genreStats(); track stat.genre) {
+            <tr>
+              <td>{{ getGenreLabel(stat.genre) }}</td>
+              <td>{{ stat.count }}</td>
+              <td>{{ stat.median | number:'1.2-2' }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="legend-box">
+        <strong>Datalähde:</strong> Elokuvat joilla on budjetti- ja tuottotiedot. <strong>ROI:</strong> (Studio revenue - budjetti) / budjetti, missä studio revenue = lipputulot * 50%.
+      </div>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
