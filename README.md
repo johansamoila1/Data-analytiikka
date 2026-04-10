@@ -2,7 +2,7 @@
 
 Tämä on data-analytiikan sovellus, joka tutkii elokuvien budjetin, tuottojen ja arvostelujen välisiä korrelaatioita ja taloudellisia realiteetteja.
 
-🚀 **Kokeile sovellusta selaimella:** [https://johansamoila1.github.io/Data-analytiikka/](https://johansamoila1.github.io/Data-analytiikka/)
+**Kokeile sovellusta selaimella:** [https://johansamoila1.github.io/Data-analytiikka/](https://johansamoila1.github.io/Data-analytiikka/)
 
 ## Projektin tarkoitus
 
@@ -54,4 +54,6 @@ npm run build
 ## Huomiot
 - Pienbudjetin elokuvat (<$10k) on suodatettu pois oletusnäkymistä laadun varmistamiseksi.
 - Tuottokerroin (Multiple) = Lipputulot / Budjetti.
-- Projektissa on painotettu, modernia Angular (Standalone Components) arkkitehtuuria ja selkeää käyttöliittymää mobiililaitteille ja työpöydälle.
+- Projektissa on painotettu koodin puhtautta, modernia Angular (Standalone Components) arkkitehtuuria ja selkeää käyttöliittymää mobiililaitteille ja työpöydälle.
+
+<!-- Test commit -->
