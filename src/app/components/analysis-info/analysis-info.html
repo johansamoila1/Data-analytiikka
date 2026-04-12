@@ -2,7 +2,8 @@
   <div class="section-header" style="margin-bottom: 2rem">
     <h2 class="section-title" style="font-size: 2rem; color: #1e293b">Analyysien dokumentaatio</h2>
     <p class="section-subtitle" style="font-size: 1.1rem">
-      Kuvaus sovelluksen käyttämistä malleista, tilastollisista standardeista.
+      Tämä osio kuvaa sovelluksen käyttämät laskentaperusteet, tilastolliset menetelmät ja
+      tietolähteet.
     </p>
   </div>
 
@@ -17,23 +18,20 @@
           padding-bottom: 0.5rem;
         "
       >
-        1. Datan standardit ja käsittely
+        1. Datan luokittelu ja käsittely
       </h3>
-      <p>
-        Sovellus jakaa elokuvat kolmeen rakenteelliseen budjettiluokkaan investoinnin kokoluokan
-        perusteella:
+      <p style="color: #334155">
+        Sovellus ryhmittelee elokuvat kolmeen luokkaan budjetin perusteella:
       </p>
       <ul style="margin-bottom: 1.5rem; color: #334155">
-        <li><strong>Indie:</strong> &lt; 5 miljoonaa dollaria ($5M)</li>
-        <li><strong>Mid-budget:</strong> 5 – 50 miljoonaa dollaria ($5M - $50M)</li>
-        <li><strong>Blockbuster:</strong> &gt; 50 miljoonaa dollaria ($50M)</li>
+        <li><strong>Indie:</strong> alle 5 milj. $</li>
+        <li><strong>Mid-budget:</strong> 5 – 50 milj. $</li>
+        <li><strong>Blockbuster:</strong> yli 50 milj. $</li>
       </ul>
       <p style="color: #334155">
-        Mediaani keskiarvon sijaan: Elokuva-alan taloudellinen data noudattaa vahvasti vinoutunutta
-        jakauman. Koska yksittäiset jättihitit (kuten Avengers tai Avatar) vääristäisivät puhtaan
-        keskiarvon täysin käyttökelvottomaksi, sovellus käyttää taloudellisissa vertailumittareissa
-        poikkeuksetta mediaania. Se antaa realistisimman kuvan kunkin budjettiluokan todellisesta
-        keskivertoelokuvasta.
+        <strong>Mediaanin käyttö:</strong> Taloudellisissa vertailuissa käytetään keskiarvon sijasta
+        mediaania. Menetelmällä estetään yksittäisten poikkeuksellisen suurten lipputulojen
+        vaikuttaminen tuloksiin tavalla, joka vääristäisi yleiskuvaa kyseisestä budjettiluokasta.
       </p>
     </mat-card-content>
   </mat-card>
@@ -49,22 +47,49 @@
           padding-bottom: 0.5rem;
         "
       >
-        2. Alan talousrealiteetit
+        2. Taloudelliset laskentakaavat
+      </h3>
+      <p style="color: #334155">Analyyseissä sovelletaan seuraavia teollisuuden standardeja:</p>
+      <ul style="margin-bottom: 1.5rem; color: #334155">
+        <li>
+          <strong>Studiotulo:</strong> Sovellus laskee studion osuudeksi 50 % lipputuloista
+          (Revenue). Loput 50 % lasketaan elokuvateatterien osuudeksi.
+        </li>
+        <li>
+          <strong>Kannattavuusraja (Break-even):</strong> Kannattavuuden rajana käytetään kerrointa
+          2,5 suhteessa tuotantobudjettiin. Tämä kattaa ilmoitetun budjetin ulkopuoliset
+          markkinointi- ja jakelukustannukset (P&A).
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="analysis-card" style="margin-bottom: 2rem">
+    <mat-card-content>
+      <h3
+        style="
+          color: #3b82f6;
+          font-size: 1.4rem;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid #e2e8f0;
+          padding-bottom: 0.5rem;
+        "
+      >
+        3. Visualisointi: Budjetti ja lipputulot
       </h3>
       <p style="color: #334155">
-        Lipputulot (Revenue) eivät tarkoita suoraan studion kassaan jäävää rahaa. Sovelluksen
-        arkkitehtuuri nojaa todellisiin elokuva-alan talousstandardeihin:
+        Hajontakuvio (Scatter Plot) kuvaa budjetin ja lipputulojen välistä yhteyttä:
       </p>
       <ul style="margin-bottom: 1.5rem; color: #334155">
         <li>
-          Sovellus olettaa alan standardin mukaisesti, että elokuvateatterit pitävät keskimäärin
-          noin 50 % lipputuloista, jättäen loput studiolle.
+          <strong>Skaalaus:</strong> Akselit (X = Budjetti, Y = Lipputulot) on skaalattu
+          logaritmisesti. Tämä mahdollistaa indie-elokuvien ja suurtuotantojen vertailun samassa
+          suhteellisessa mittakaavassa.
         </li>
         <li>
-          <strong>Break-even -raja (2,5x):</strong> Koska ilmoitettu tuotantobudjetti ei koskaan
-          sisällä markkinointi- ja jakelukuluja (P&A), elokuvan on yleisen säännön mukaan tuotettava
-          teattereissa vähintään 2,5-kertaisesti oman budjettinsa verran päästäkseen omilleen. Tätä
-          rajaa käytetään sovelluksen referenssipisteenä.
+          <strong>Kannattavuusviiva:</strong> Kuvaajaan on merkitty 2,5x-referenssiviiva. Viivan
+          yläpuoliset pisteet edustavat elokuvia, joiden lipputulot ylittävät arvioidun
+          kannattavuusrajan.
         </li>
       </ul>
     </mat-card-content>
@@ -81,24 +106,20 @@
           padding-bottom: 0.5rem;
         "
       >
-        3. Yleisnäkymä (Hajontakuvio)
+        4. Arvostelujen korrelaatioanalyysi
       </h3>
       <p style="color: #334155">
-        Yleisnäkymän hajontakuvio (Scatter Plot) havainnollistaa budjetin ja lipputulojen välistä
-        korrelaatiota.
+        Eri arviointialustojen (esim. IMDb, Rotten Tomatoes, Metacritic) välistä yksimielisyyttä
+        mitataan Pearsonin korrelaatiokertoimella välillä -1,0 – +1,0.
       </p>
-      <ul style="margin-bottom: 1rem; color: #334155">
+      <ul style="margin-bottom: 1.5rem; color: #334155">
         <li>
-          <strong>Logaritmiset akselit:</strong> Koska budjetit ja tuotot vaihtelevat kymmenistä
-          tuhansista miljardeihin dollareihin, molemmat akselit (X = Budjetti, Y = Tuotto) on
-          skaalattu logaritmisesti. Tämä mahdollistaa indie-elokuvien ja megablockbusterien
-          vertailun samassa kuvaajassa suhteellisen kasvu-uran mukaisesti.
+          <strong>Käsittely:</strong> Analyysiin sisältyvät kaikki numeeriset arvosanat (mukaan
+          lukien 0 % ja 0/100).
         </li>
         <li>
-          <strong>2,5x Break-even -referenssiviiva:</strong> Kuvaajan poikki kulkee punainen
-          vinoviiva. Pisteet viivan yläpuolella ovat todennäköisesti taloudellisesti kannattavia
-          (tuottokerroin > 2,5x), kun taas viivan alapuolelle jäävät elokuvat ovat tehneet tappiota
-          teatterikierroksellaan.
+          <strong>Suodatus:</strong> Mikäli elokuvasta puuttuu jonkin alustan arvosana, se jätetään
+          kyseisen parivertailun ulkopuolelle datan eheyden varmistamiseksi.
         </li>
       </ul>
     </mat-card-content>
@@ -115,79 +136,34 @@
           padding-bottom: 0.5rem;
         "
       >
-        4. Arvostelujen korrelaatio
+        5. Regressiomallit
       </h3>
       <p style="color: #334155">
-        Arvosteluanalyysi käyttää Pearsonin korrelaatiokerrointa mittaamaan eri arvosteluplatformien
-        (Rotten Tomatoes, IMDb, Metacritic, Letterboxd) välistä lineaarista riippuvuutta asteikolla
-        -1.0 ... +1.0.
-      </p>
-      <ul style="margin-bottom: 1rem; color: #334155">
-        <li>+1,0 tarkoittaa täydellistä yksimielisyyttä ja 0,0 täydellistä yhteyden puutetta.</li>
-        <li>
-          <strong>0 % arvosanat:</strong> Jotta malli ei kärsi valikoimisharhasta, myös armottomat 0
-          % tai 0/100 pisteen arvosanat on otettu mukaan korrelaatiomatriisiin.
-        </li>
-        <li>
-          <strong>Tilastollinen eheys:</strong> Elokuvat, joilta puuttuu tietyn lähteen arvosana
-          kokonaan, suodatetaan kyseisen parivertailun ulkopuolelle. Vain numeerisesti validi data
-          osallistuu matriisin muodostamiseen.
-        </li>
-      </ul>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="analysis-card" style="margin-bottom: 2rem">
-    <mat-card-content>
-      <h3
-        style="
-          color: #3b82f6;
-          font-size: 1.4rem;
-          margin-bottom: 1rem;
-          border-bottom: 1px solid #e2e8f0;
-          padding-bottom: 0.5rem;
-        "
-      >
-        5. Regressiomallinnus
-      </h3>
-      <p style="color: #334155">
-        Regressiomallinnus pureutuu syvälle elokuvainvestointien dynamiikkaan kolmen tarkan
-        matemaattisen mallin avulla. Kussakin mallissa R² (Selitysaste) kertoo, kuinka suuri osa
-        Y-akselin vaihtelusta pystytään matemaattisesti selittämään X-akselin datalla.
+        Sovellus käyttää kolmea mallia analysoimaan muuttujien välisiä riippuvuussuhteita.
+        Selitysaste (R²) kertoo, kuinka tarkasti valittu muuttuja selittää lopputuloksen.
       </p>
 
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 1: Budjetti vs. Tuotto</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 1 (Budjetti vs. Lipputulot)</h4>
         <p style="color: #334155">
-          Tämä malli käyttää logaritmis-logaritmista skaalausta ja noudattaa potenssilakia (Y =
-          10^intercept × X^slope). Se mittaa puhtaiden absoluuttisten rahamäärien korrelaatiota
-          paljastaen, skaalautuvatko tuotot suoraan investoidun dollarimäärän mukana vai loppuuko
-          markkinoiden ostovoima kesken.
+          Mittaa absoluuttisten rahamäärien skaalautuvuutta käyttämällä logaritmista muunnosta.
         </p>
       </div>
 
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 2: Arvosana vs. Tuottokerroin</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 2 (Arvosana vs. Tuottokerroin)</h4>
         <p style="color: #334155">
-          Tämä on lineaarinen malli (y = mx + b). Se tutkii, toimiiko laatu (yleisö- ja
-          kriitikkoarvosanojen keskiarvo) takeena taloudelliselle menestykselle (Tuottokerroin eli
-          Multiple: Revenue / Budget). Malli pyrkii vastaamaan kysymykseen pelastaako erinomainen
-          elokuva huonon investoinnin?
+          Lineaarinen malli, joka selvittää kriitikko- ja yleisöarvosanojen vaikutusta sijoitetun
+          pääoman tuottoon.
         </p>
       </div>
 
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 3: Budjetti vs. Tuottokerroin</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 3 (Budjetti vs. Tuottokerroin)</h4>
         <p style="color: #334155">
-          Tämä on sovelluksen tärkein taloudellinen malli. X-akselilla on Budjetti ja Y-akselilla
-          Tuottokerroin. Malli mittaa suoraan pääoman tehokkuutta ja paljastaa vähenevän rajatuoton
-          lain elokuva-alalla. Toisin sanoen kun budjetti moninkertaistuu, moninkertaistuuko myös
-          tuottokerroin, vai romahtaako sijoitetun pääoman suhteellinen tuotto? <br /><br />
-          Mallin tilastollinen arvo perustuu siihen, että se ei käsittele vain voittajia. Kaikki
-          tappiolliset elokuvat, mukaan lukien massiiviset taloudelliset floppaukset, on pakotettu
-          mukaan laskentaan (tarvittaessa asettamalla nollatuottoisen elokuvan kertoimeksi alarajan
-          0,01), jotta regressioyhtälö heijastaa alan todellisuutta eikä vain parhaiten
-          selviytyneiden illuusiota.
+          Mittaa pääoman tehokkuutta. Malli osoittaa, miten budjetin kasvu vaikuttaa suhteelliseen
+          tuottoon (Revenue / Budget). Laskentaan on sisällytetty myös tappiolliset elokuvat
+          (vähimmäisarvo 0,01) harhan välttämiseksi.
         </p>
       </div>
     </mat-card-content>
@@ -204,37 +180,21 @@
           padding-bottom: 0.5rem;
         "
       >
-        6. Data-aineistot
+        6. Käytetyt tietovarannot
       </h3>
-      <p style="color: #334155">Sovellus käyttää analyyseissään kahta eri datalähdettä</p>
-
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Laajennettu data (Extended)</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Laajennettu data (n > 12 000)</h4>
         <p style="color: #334155">
-          Perusaineisto (yli 12 000 elokuvaa) mahdollistaa erittäin laajat taloudelliset trendi- ja
-          budjettianalyysit.
+          Käytetään laajoihin taloudellisiin trendeihin. Sisältää nimen, vuoden, genren, budjetin ja
+          lipputulot.
         </p>
-        <ul style="margin-bottom: 1.5rem; color: #334155">
-          <li>
-            <strong>Sisältää:</strong> Elokuvan nimi, julkaisuvuosi, genret, budjetti ja lipputulot.
-          </li>
-          <li><strong>Ei sisällä:</strong> Arvostelutietoja.</li>
-        </ul>
       </div>
-
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Arvosteludata (Rated)</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Arvosteludata (n > 2 600)</h4>
         <p style="color: #334155">
-          Karsitumpi laatuaineisto (yli 2 600 elokuvaa), josta kaikki laatuanalyysit ja
-          regressiomallinnukset johdetaan.
+          Käytetään laatuanalyyseihin ja regressiomalleihin. Sisältää edellisten lisäksi arvosanat
+          viidestä eri lähteestä.
         </p>
-        <ul style="margin-bottom: 0; color: #334155">
-          <li>
-            <strong>Sisältää:</strong> Kaikki yllä mainitut taloustiedot sekä kattavat arvosanat
-            viidestä eri lähteestä (IMDb, Rotten Tomatoes Kriitikot & Yleisö, Letterboxd,
-            Metacritic).
-          </li>
-        </ul>
       </div>
     </mat-card-content>
   </mat-card>
