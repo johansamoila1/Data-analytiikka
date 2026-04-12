@@ -18,7 +18,12 @@ import { BasicMovie } from '../../models/basic-movie.model';
 import Chart from 'chart.js/auto';
 import { getCorrelationColor, getCorrelationTextColor } from '../../utils/movie-utils';
 
-type RatingKey = 'vote_average_100' | 'tomatometer_rating' | 'audience_rating' | 'letterbox_rating' | 'metascore';
+type RatingKey =
+  | 'vote_average_100'
+  | 'tomatometer_rating'
+  | 'audience_rating'
+  | 'letterbox_rating'
+  | 'metascore';
 
 interface RatingSource {
   key: RatingKey;
@@ -103,7 +108,11 @@ export class OverviewAnalysis implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (
       this.scatterChart &&
-      (changes['filteredMovies'] || changes['selectedMovie'] || changes['selectedGenres'] || changes['extendedMovies'] || changes['selectedMovies'])
+      (changes['filteredMovies'] ||
+        changes['selectedMovie'] ||
+        changes['selectedGenres'] ||
+        changes['extendedMovies'] ||
+        changes['selectedMovies'])
     ) {
       this.updateAll();
     }
@@ -116,7 +125,7 @@ export class OverviewAnalysis implements OnInit, OnChanges {
 
   private getMovieRating(movie: Movie, key: RatingKey): number {
     const value = movie[key];
-    return typeof value === 'number' ? value : (Number(value) || 0);
+    return typeof value === 'number' ? value : Number(value) || 0;
   }
 
   private pearsonCorrelation(movies: Movie[], key1: RatingKey, key2: RatingKey): number {
@@ -187,9 +196,9 @@ export class OverviewAnalysis implements OnInit, OnChanges {
                 const title = point.title || 'Tuntematon';
                 const year = point.year ? ` (${point.year})` : '';
                 return `${title}${year}: $${point.x.toFixed(1)}M → $${point.y.toFixed(1)}M`;
-              }
-            }
-          }
+              },
+            },
+          },
         },
         scales: {
           x: {
@@ -198,17 +207,17 @@ export class OverviewAnalysis implements OnInit, OnChanges {
             title: { display: true, text: 'Budjetti ($M)', color: '#333', font: { size: 13 } },
             grid: { color: '#e5e7eb' },
             ticks: { color: '#666', font: { size: 11 } },
-            min: 0.1
+            min: 0.1,
           },
           y: {
             type: 'logarithmic',
             title: { display: true, text: 'Tuotto ($M)', color: '#333', font: { size: 13 } },
             grid: { color: '#e5e7eb' },
             ticks: { color: '#666', font: { size: 11 } },
-            min: 0.1
-          }
-        }
-      }
+            min: 0.1,
+          },
+        },
+      },
     });
   }
 
@@ -216,67 +225,91 @@ export class OverviewAnalysis implements OnInit, OnChanges {
     if (!this.scatterChart) return;
 
     const movies = this.filteredMovies.filter((m) => Number(m.budget) > 0 && Number(m.revenue) > 0);
-    const selectedMovieData = this.selectedMovie && Number(this.selectedMovie.budget) > 0 && Number(this.selectedMovie.revenue) > 0 
-      ? [{ x: this.selectedMovie.budget, y: this.selectedMovie.revenue, movie: this.selectedMovie }] 
-      : [];
-    const selectedMoviesData = this.selectedMovies 
-      ? this.selectedMovies.filter((m) => Number(m.budget) > 0 && Number(m.revenue) > 0).map((m) => ({ x: m.budget, y: m.revenue, movie: m })) 
+    const selectedMovieData =
+      this.selectedMovie &&
+      Number(this.selectedMovie.budget) > 0 &&
+      Number(this.selectedMovie.revenue) > 0
+        ? [
+            {
+              x: this.selectedMovie.budget,
+              y: this.selectedMovie.revenue,
+              movie: this.selectedMovie,
+            },
+          ]
+        : [];
+    const selectedMoviesData = this.selectedMovies
+      ? this.selectedMovies
+          .filter((m) => Number(m.budget) > 0 && Number(m.revenue) > 0)
+          .map((m) => ({ x: m.budget, y: m.revenue, movie: m }))
       : [];
 
     const datasets: any[] = [];
 
-    
     if (selectedMovieData.length > 0) {
       datasets.push({
         label: 'Valittu elokuva',
-        data: selectedMovieData.map((d) => ({ x: Number(d.x) / 1000000, y: Number(d.y) / 1000000, title: d.movie?.title || '', year: d.movie?.year || '' })),
+        data: selectedMovieData.map((d) => ({
+          x: Number(d.x) / 1000000,
+          y: Number(d.y) / 1000000,
+          title: d.movie?.title || '',
+          year: d.movie?.year || '',
+        })),
         backgroundColor: 'rgba(220, 38, 38, 1)',
         borderColor: 'rgba(220, 38, 38, 1)',
         pointRadius: this.getPointSizes().large,
-        pointHoverRadius: this.getPointSizes().hoverLarge
+        pointHoverRadius: this.getPointSizes().hoverLarge,
       });
     }
 
     if (selectedMoviesData.length > 0) {
       datasets.push({
         label: 'Valitut elokuvat',
-        data: selectedMoviesData.map((d) => ({ x: Number(d.x) / 1000000, y: Number(d.y) / 1000000, title: d.movie?.title || '', year: d.movie?.year || '' })),
+        data: selectedMoviesData.map((d) => ({
+          x: Number(d.x) / 1000000,
+          y: Number(d.y) / 1000000,
+          title: d.movie?.title || '',
+          year: d.movie?.year || '',
+        })),
         backgroundColor: 'rgba(234, 179, 8, 1)',
         borderColor: 'rgba(234, 179, 8, 1)',
         pointRadius: this.getPointSizes().medium,
-        pointHoverRadius: this.getPointSizes().hoverMedium
+        pointHoverRadius: this.getPointSizes().hoverMedium,
       });
     }
 
     if (movies.length > 0) {
       datasets.push({
         label: 'Kaikki elokuvat',
-        data: movies.map((m) => ({ x: Number(m.budget) / 1000000, y: Number(m.revenue) / 1000000, title: m.title || '', year: m.year || '' })),
+        data: movies.map((m) => ({
+          x: Number(m.budget) / 1000000,
+          y: Number(m.revenue) / 1000000,
+          title: m.title || '',
+          year: m.year || '',
+        })),
         backgroundColor: 'rgba(59, 130, 246, 0.6)',
         borderColor: 'rgba(59, 130, 246, 1)',
         pointRadius: this.getPointSizes().small,
-        pointHoverRadius: this.getPointSizes().hoverSmall
+        pointHoverRadius: this.getPointSizes().hoverSmall,
       });
     }
 
-    
     const breakEvenData: { x: number; y: number }[] = [];
     for (let x = 0.1; x <= 300; x *= 1.5) {
       breakEvenData.push({ x, y: 2.5 * x });
     }
-    
+
     datasets.push({
       label: 'Break-even (2.5x)',
       data: breakEvenData,
       type: 'line',
-      borderColor: 'rgba(22, 101, 52, 1)',
-      backgroundColor: 'rgba(22, 101, 52, 0.1)',
+      borderColor: 'rgba(220, 38, 38, 1)',
+      backgroundColor: 'rgba(220, 38, 38, 0.1)',
       borderWidth: 4,
       borderDash: [8, 4],
       pointRadius: 0,
       fill: false,
       spanGaps: true,
-      order: -1 
+      order: -1,
     });
 
     this.scatterChart.data.datasets = datasets;
