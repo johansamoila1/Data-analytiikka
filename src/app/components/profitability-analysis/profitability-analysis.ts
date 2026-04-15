@@ -51,7 +51,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
     const budget = Number(movie.budget) || 0;
     const revenue = Number(movie.revenue) || 0;
     if (budget <= 0 || revenue <= 0) return NaN; 
-    return revenue / budget;
+    return (revenue - budget) / budget;
   }
 
   initHistogramChart() {
@@ -80,7 +80,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
         },
         scales: {
           x: { 
-            title: { display: true, text: 'Tuottokerroin (Revenue / Budget)', color: '#333' }, 
+            title: { display: true, text: 'ROI', color: '#333' }, 
             grid: { display: false }, 
             ticks: { color: '#666' },
             border: { display: true, color: '#e5e7eb' }
@@ -119,7 +119,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
               label: (ctx: any) => {
                 const label = ctx.dataset.label;
                 const val = ctx.raw;
-                if (label === 'Mediaani tuottokerroin') return `Kerroin: ${val.toFixed(2)}`;
+                if (label === 'Mediaani ROI') return `ROI: ${val.toFixed(2)}`;
                 if (label === 'Lukumäärä') return `Määrä: ${val}`;
                 return '';
               }
@@ -132,7 +132,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
             type: 'linear',
             display: true,
             position: 'left',
-            title: { display: true, text: 'Mediaani tuottokerroin', color: '#333' },
+            title: { display: true, text: 'Mediaani ROI', color: '#333' },
             grid: { color: '#e5e7eb' },
             ticks: { color: '#666' }
           },
@@ -184,13 +184,13 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
     }
 
     const bins = [
-      { label: '< 0.5×', min: -Infinity, max: 0.5 },
-      { label: '0.5–1×', min: 0.5, max: 1 },
-      { label: '1–2×', min: 1, max: 2 },
-      { label: '2–5×', min: 2, max: 5 },
-      { label: '5–10×', min: 5, max: 10 },
-      { label: '10–20×', min: 10, max: 20 },
-      { label: '> 20×', min: 20, max: Infinity }
+      { label: '< -0.5', min: -Infinity, max: -0.5 },
+      { label: '-0.5–0', min: -0.5, max: 0 },
+      { label: '0–1', min: 0, max: 1 },
+      { label: '1–2', min: 1, max: 2 },
+      { label: '2–5', min: 2, max: 5 },
+      { label: '5–10', min: 5, max: 10 },
+      { label: '> 10', min: 10, max: Infinity }
     ];
 
     const counts = bins.map(bin => multipleValues.filter(v => v >= bin.min && v < bin.max).length);
@@ -250,7 +250,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
       const getMultiple = (m: Movie | BasicMovie): number => {
         const budget = Number(m.budget) || 0;
         const revenue = Number(m.revenue) || 0;
-        return budget > 0 ? revenue / budget : NaN;
+        return budget > 0 ? (revenue - budget) / budget : NaN;
       };
 
       const allMultiples = [...movies, ...extendedInCat]
@@ -262,7 +262,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
       
       
       
-      const profitable = allMultiples.filter(v => v > 2.0).length;
+      const profitable = allMultiples.filter(v => v > 1.0).length;
 
       return {
         label: cat.label,
@@ -277,7 +277,7 @@ export class ProfitabilityAnalysis implements OnInit, OnChanges {
       this.budgetCategoryChart.data.labels = stats.map(s => s.label);
       this.budgetCategoryChart.data.datasets = [
         {
-          label: 'Mediaani tuottokerroin',
+          label: 'Mediaani ROI',
           data: stats.map(s => s.medianMultiple),
           backgroundColor: 'rgba(37, 99, 235, 0.8)',
           borderColor: 'rgba(37, 99, 235, 0.8)',

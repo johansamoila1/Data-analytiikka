@@ -82,7 +82,7 @@ export class RegressionAnalysis implements OnInit, OnChanges {
       this.ratingMultipleChart = new Chart(ctx2, {
         type: 'scatter',
         data: { datasets: [] },
-        options: this.getChartOptions('Yleisön arvosana', 'Tuottokerroin', false),
+        options: this.getChartOptions('Yleisön arvosana', 'ROI', false),
       });
     }
 
@@ -132,10 +132,10 @@ export class RegressionAnalysis implements OnInit, OnChanges {
                     yLabel = 'Tuotto';
                   } else if (context.chart === this.ratingMultipleChart) {
                     xLabel = 'Arvosana';
-                    yLabel = 'Kerroin';
+                    yLabel = 'ROI';
                   } else if (context.chart === this.budgetMultipleChart) {
                     xLabel = 'Budjetti';
-                    yLabel = 'Kerroin';
+                    yLabel = 'Tuottokerroin';
                   }
                 }
                 return `${title}${year}: ${xLabel} ${raw.x?.toFixed(2)}, ${yLabel} ${raw.y?.toFixed(2)}`;
@@ -275,7 +275,7 @@ export class RegressionAnalysis implements OnInit, OnChanges {
         const revenue = Number(m.revenue) || 0;
         if (budget <= 0) return null;
 
-        const multiple = revenue / budget;
+        const multiple = (revenue - budget) / budget;
         const scores = [
           Number(m.vote_average_100) || 0,
           Number(m.audience_rating) || 0,

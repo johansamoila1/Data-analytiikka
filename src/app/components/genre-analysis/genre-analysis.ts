@@ -111,8 +111,7 @@ export class GenreAnalysis implements OnInit, OnChanges {
         const revenue = Number(m.revenue) || 0;
         
         
-        const studioRevenue = revenue * 0.5;
-        const roi = (studioRevenue - budget) / budget;
+        const roi = (revenue - budget) / budget;
         
         if (!isNaN(roi)) roiValues.push(roi);
       }

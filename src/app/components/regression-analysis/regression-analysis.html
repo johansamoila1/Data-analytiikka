@@ -30,43 +30,43 @@
   <mat-card class="analysis-card">
     <mat-card-content>
       <div class="section-header">
-        <h3 class="section-title">2. Yleisön arvosana vs Tuottokerroin</h3>
+        <h3 class="section-title">2. Yleisön arvosana vs ROI</h3>
         <div
           class="info-icon-small"
-          title="Ennustaako yleisön arvosana (IMDb + RT Yleisö + Letterboxd) kannattavuutta (Tuottokerroin)? Tuottokerroin = Revenue / Budget."
+          title="Yleisön arvosanan ja ROI:n (sijoitetun pääoman tuoton) suhde. Lineaarinen malli näyttää, korreloivatko korkeammat arvosanat paremman suhteellisen tuoton kanssa."
         >
           i
         </div>
       </div>
-      <p class="section-subtitle">Ennustaako arvosana kannattavuutta?</p>
+      <p class="section-subtitle">Korostuuko ROI parhaiten arvioiduissa elokuvissa?</p>
+      <div class="chart-container" style="height: 40vh">
+        <canvas #ratingMultipleChart></canvas>
+      </div>
       @if (ratingMultipleResult(); as reg) {
       <div class="regression-info">
         <span
-          ><strong>Yhtälö:</strong> Kerroin = {{ reg.slope | number:'1.3-3' }} × Arvosana + {{
+          ><strong>Yhtälö:</strong> ROI = {{ reg.slope | number:'1.3-3' }} × Arvosana + {{
           reg.intercept | number:'1.2-2' }}</span
         >
         <span><strong>R²:</strong> {{ reg.r2 | number:'1.4-4' }}</span>
         <span><strong>N:</strong> {{ reg.n }} elokuvaa</span>
       </div>
       }
-      <div class="chart-container" style="height: 40vh">
-        <canvas #ratingMultipleChart></canvas>
-      </div>
     </mat-card-content>
   </mat-card>
 
   <mat-card class="analysis-card">
     <mat-card-content>
       <div class="section-header">
-        <h3 class="section-title">3. Budjetti vs Tuottokerroin</h3>
+        <h3 class="section-title">3. Budjetti vs. Tuottokerroin</h3>
         <div
           class="info-icon-small"
-          title="Ennustaako budjetti kannattavuutta? X-akseli = budjetti ($M), Y-akseli = Tuottokerroin. Selittääkö suurempi budjetti paremman vai huonomman suhteellisen tuoton?"
+          title="Miten budjetin koko vaikuttaa elokuvan suhteelliseen Tuottokertoimeen (Revenue/Budget)? Logaritminen skaalaus paljastaa varallisuuden aidon power-law-suhteen vaimentaen äärihittien vääristymät."
         >
           i
         </div>
       </div>
-      <p class="section-subtitle">Ennustaako budjetti kannattavuutta?</p>
+      <p class="section-subtitle">Ovatko pienemmän budjetin elokuvat suhteessa tuottavampia?</p>
       @if (budgetMultipleResult(); as reg) {
       <div class="regression-info">
         <span

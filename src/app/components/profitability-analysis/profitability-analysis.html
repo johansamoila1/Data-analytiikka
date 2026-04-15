@@ -2,12 +2,12 @@
   <mat-card class="analysis-card no-margin-top">
     <mat-card-content>
       <div class="section-header">
-        <h3 class="section-title">Tuottokerroin-jakauma</h3>
-        <div class="info-icon-small" title="Histogrammi näyttää elokuvien tuottokerroinjakauman. Tuottokerroin = Tuotto / Budjetti. X-akseli = kerroin, Y-akseli = elokuvamäärä. Alan standardin mukainen teatterijako (50%) huomioiden elokuva on tyypillisesti kannattava, kun sen tuottokerroin ylittää 2.0.">
+        <h3 class="section-title">ROI-jakauma</h3>
+        <div class="info-icon-small" title="Histogrammi näyttää elokuvien ROI-jakauman. ROI = (Tuotto - Budjetti) / Budjetti. X-akseli = ROI, Y-akseli = elokuvamäärä.">
           i
         </div>
       </div>
-      <p class="section-subtitle">Elokuvien tuottokerroinjakauma histogrammina</p>
+      <p class="section-subtitle">Elokuvien ROI-jakauma histogrammina</p>
       <div class="chart-container" style="height: 40vh">
         <canvas #histogramChart></canvas>
       </div>
@@ -18,13 +18,13 @@
     <mat-card-content>
       <div class="section-header">
         <h3 class="section-title">Budjettiluokittelu</h3>
-        <div class="info-icon-small" title="Elokuvat jaettu budjetin mukaan kolmeen luokkaan: Indie (<5M$), Mid-budget (5M-50M$), Blockbuster (>50M$). Kunkin luokan mediaani-tuottokerroin ja kannattavuusprosentti.">
+        <div class="info-icon-small" title="Elokuvat jaettu budjetin mukaan kolmeen luokkaan: Indie (<5M$), Mid-budget (5M-50M$), Blockbuster (>50M$). Kunkin luokan mediaani-ROI ja kannattavuusprosentti.">
           i
         </div>
       </div>
-      <p class="section-subtitle">Mediaani tuottokerroin ja elokuvamäärä budjettiluokittain</p>
+      <p class="section-subtitle">Mediaani ROI ja elokuvamäärä budjettiluokittain</p>
       <p class="analysis-mention">
-        * Kannattavaksi katsotaan elokuvat, joiden tuottokerroin on yli 2.0× (eli bruttotuotto on yli kaksinkertainen budjettiin nähden, huomioiden n. 50 % teatterijaon).
+        * Kannattavaksi katsotaan tässä karkeasti elokuvat, joiden ROI on yli 1.0 (eli tuotto on yli kaksinkertainen budjettiin nähden).
       </p>
       <div class="chart-container" style="height: 45vh">
         <canvas #budgetCategoryChart></canvas>
