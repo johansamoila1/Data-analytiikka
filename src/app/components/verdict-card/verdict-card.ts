@@ -4,9 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { Movie } from '../../models/movie.model';
 import { getWeightedScore } from '../../utils/movie-utils';
 
-
 export interface VerdictScores {
-  eliteScore: number | null;
+  combinedScore: number | null;
   combinedAudienceScore: number | null;
 }
 
@@ -20,10 +19,8 @@ export interface VerdictScores {
 export class VerdictCard implements OnChanges {
   @Input() movie: Movie | null = null;
 
-  
-  scores: VerdictScores = { eliteScore: null, combinedAudienceScore: null };
+  scores: VerdictScores = { combinedScore: null, combinedAudienceScore: null };
 
-  
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['movie']) {
       this.updateScores();
@@ -32,20 +29,17 @@ export class VerdictCard implements OnChanges {
 
   private updateScores(): void {
     if (!this.movie) {
-      this.scores = { eliteScore: null, combinedAudienceScore: null };
+      this.scores = { combinedScore: null, combinedAudienceScore: null };
       return;
     }
 
     const rawScores = getWeightedScore(this.movie);
 
-    
-    
-    
     this.scores = {
-      eliteScore:
-        rawScores.eliteScore === null || Number.isNaN(rawScores.eliteScore)
+      combinedScore:
+        rawScores.combinedScore === null || Number.isNaN(rawScores.combinedScore)
           ? null
-          : rawScores.eliteScore,
+          : rawScores.combinedScore,
       combinedAudienceScore:
         rawScores.combinedAudienceScore === null || Number.isNaN(rawScores.combinedAudienceScore)
           ? null

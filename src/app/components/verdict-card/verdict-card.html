@@ -3,9 +3,9 @@
     <div class="verdict-main">
       <div class="verdict-header">
         <h2>{{ movie.title }} <span class="year">({{ movie.year }})</span></h2>
-        <div class="elite-score-container" *ngIf="scores.eliteScore !== null">
-          <span class="elite-label">ELITE SCORE</span>
-          <span class="elite-value">{{ scores.eliteScore | number:'1.0-1' }}</span>
+        <div class="combined-score-container" *ngIf="scores.combinedScore !== null">
+          <span class="combined-label">COMBINED SCORE</span>
+          <span class="combined-value">{{ scores.combinedScore | number:'1.0-1' }}</span>
         </div>
       </div>
 

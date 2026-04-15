@@ -7,7 +7,7 @@ function parseRating(value: any): number | null {
 }
 
 export function getWeightedScore(m: Movie): {
-  eliteScore: number | null;
+  combinedScore: number | null;
   combinedAudienceScore: number | null;
 } {
   const voteAvg = parseRating(m.vote_average_100);
@@ -47,7 +47,7 @@ export function getWeightedScore(m: Movie): {
   }
 
   return {
-    eliteScore: weightSum > 0 ? eScore / weightSum : null,
+    combinedScore: weightSum > 0 ? eScore / weightSum : null,
     combinedAudienceScore: a !== null ? Math.round(a) : null,
   };
 }
