@@ -28,10 +28,15 @@
         <li><strong>Mid-budget:</strong> 5 – 50 milj. $</li>
         <li><strong>Blockbuster:</strong> yli 50 milj. $</li>
       </ul>
-      <p style="color: #334155">
+      <p style="color: #334155; margin-bottom: 0.5rem">
         <strong>Mediaanin käyttö:</strong> Taloudellisissa vertailuissa käytetään keskiarvon sijasta
         mediaania. Menetelmällä estetään yksittäisten poikkeuksellisen suurten lipputulojen
         vaikuttaminen tuloksiin tavalla, joka vääristäisi yleiskuvaa kyseisestä budjettiluokasta.
+      </p>
+      <p style="color: #334155">
+        <strong>Datan puhdistaminen (Data Cleaning):</strong> Roskadatan välttämiseksi kaikki analyysit suodattavat oletuksena pois elokuvat,
+        joiden ilmoitettu tuotto (Revenue) tai budjetti (Budget) on alle 10 000 dollaria. Tämä rajaustapa takaa, että
+        analyyseihin sisällytetään vain aidosti teatterilevityksessä olleita ammattilaistuotantoja ja hylätään datapuutteet tai koesyötöt.
       </p>
     </mat-card-content>
   </mat-card>
@@ -151,19 +156,23 @@
       </div>
 
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 2 (Arvosana vs. ROI)</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 2 (Kriitikot vs Yleisö)</h4>
         <p style="color: #334155">
-          Lineaarinen malli, joka selvittää kriitikko- ja yleisöarvosanojen vaikutusta sijoitetun
-          pääoman tuottoon (ROI).
+          Lineaarinen malli. Selvittää, onko kriitikoiden ja katsojien mielipiteillä 
+          tilastollista korrelaatiota. Mitä lähemmin arvosanat vastaavat toisiaan,
+          sitä selkeämmin pisteet asettuvat nousevalle kapealle linjalle. Poikkeamat
+          (kriitikoiden hehkuttama huti, yleisön hehkuttama roskaleffa jne) nousevat 
+          suoralta visuaalisesti esiin.
         </p>
       </div>
 
       <div style="margin-top: 1.5rem">
-        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 3 (Budjetti vs. Tuottokerroin)</h4>
+        <h4 style="font-size: 1.1rem; color: #1e293b">Malli 3 (Budjetti vs Elokuvan suosio)</h4>
         <p style="color: #334155">
-          Mittaa pääoman tehokkuutta Log-Log regressiolla. Malli osoittaa, miten budjetin kasvu vaikuttaa suhteelliseen
-          tuottoon eli kertoimeen (Revenue / Budget). Logaritminen muunnos vähentää hittielokuvien ääriarvojen vääristävää
-          vaikutusta poistaen samalla lineaarisen mallin virheen.
+          Log-Log-regressio molemmilla akseleilla tutkii, miten elokuvan saamat 
+          äänimäärät elävät suhteessa sen ilmoitettuun budjettiin. Tämä vastaa 
+          kysymykseen: kasvaako "tyköistuvuus" ja brändin laajuus vääjäämättä,
+          jos mainontaan kaadetaan eksponentiaalisesti lisää rahaa.
         </p>
       </div>
     </mat-card-content>

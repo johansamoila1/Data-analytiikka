@@ -82,7 +82,7 @@ export class RegressionAnalysis implements OnInit, OnChanges {
       this.ratingMultipleChart = new Chart(ctx2, {
         type: 'scatter',
         data: { datasets: [] },
-        options: this.getChartOptions('Yleisön arvosana', 'ROI', false),
+        options: this.getChartOptions('Kriitikot (0-100)', 'Yleisö (0-100)', false),
       });
     }
 
@@ -91,12 +91,15 @@ export class RegressionAnalysis implements OnInit, OnChanges {
       this.budgetMultipleChart = new Chart(ctx3, {
         type: 'scatter',
         data: { datasets: [] },
-        options: this.getChartOptions('Budjetti ($M)', 'Tuottokerroin', true),
+        options: this.getChartOptions('Budjetti ($M)', 'Äänimäärä', true),
       });
     }
   }
 
-  private getChartOptions(xTitle: string, yTitle: string, isLogScale: boolean): ChartOptions {
+  private getChartOptions(xTitle: string, yTitle: string, logScale: boolean | {x: boolean, y: boolean}): ChartOptions {
+    const isLogX = typeof logScale === 'boolean' ? logScale : logScale.x;
+    const isLogY = typeof logScale === 'boolean' ? logScale : logScale.y;
+
     return {
       responsive: true,
       maintainAspectRatio: false,
@@ -131,11 +134,11 @@ export class RegressionAnalysis implements OnInit, OnChanges {
                     xLabel = 'Budjetti';
                     yLabel = 'Tuotto';
                   } else if (context.chart === this.ratingMultipleChart) {
-                    xLabel = 'Arvosana';
-                    yLabel = 'ROI';
+                    xLabel = 'Kriitikot';
+                    yLabel = 'Yleisö';
                   } else if (context.chart === this.budgetMultipleChart) {
                     xLabel = 'Budjetti';
-                    yLabel = 'Tuottokerroin';
+                    yLabel = 'Äänimäärä';
                   }
                 }
                 return `${title}${year}: ${xLabel} ${raw.x?.toFixed(2)}, ${yLabel} ${raw.y?.toFixed(2)}`;
@@ -147,13 +150,13 @@ export class RegressionAnalysis implements OnInit, OnChanges {
       },
       scales: {
         x: {
-          type: isLogScale ? 'logarithmic' : 'linear',
+          type: isLogX ? 'logarithmic' : 'linear',
           title: { display: true, text: xTitle, color: '#333', font: { size: 12 } },
           grid: { color: '#e5e7eb' },
           ticks: { color: '#666', font: { size: 10 } },
         },
         y: {
-          type: isLogScale ? 'logarithmic' : 'linear',
+          type: isLogY ? 'logarithmic' : 'linear',
           title: { display: true, text: yTitle, color: '#333', font: { size: 12 } },
           grid: { color: '#e5e7eb' },
           ticks: { color: '#666', font: { size: 10 } },
@@ -197,6 +200,18 @@ export class RegressionAnalysis implements OnInit, OnChanges {
     return this.calculateRegression(logData);
   }
 
+  private calculateSemiLogYRegression(data: DataPoint[]): RegressionResult | null {
+    const validData = data.filter((d) => d.y > 0);
+    if (validData.length < 5) return null;
+
+    const logData = validData.map((d) => ({
+      x: d.x,
+      y: Math.log10(Math.max(0.01, d.y)),
+    }));
+
+    return this.calculateRegression(logData);
+  }
+
   private createLinePoints(
     result: RegressionResult,
     xMin: number,
@@ -221,6 +236,22 @@ export class RegressionAnalysis implements OnInit, OnChanges {
       { x: xMin, y: result.slope * xMin + result.intercept },
       { x: xMax, y: result.slope * xMax + result.intercept },
     ];
+  }
+
+  private createSemiLogYLinePoints(
+    result: RegressionResult,
+    xMin: number,
+    xMax: number,
+  ): DataPoint[] {
+    const points: DataPoint[] = [];
+    const steps = 50;
+    for (let i = 0; i <= steps; i++) {
+        const x = xMin + (xMax - xMin) * (i / steps);
+        const logY = result.slope * x + result.intercept;
+        const y = Math.pow(10, logY);
+        points.push({ x, y });
+    }
+    return points;
   }
 
   updateAllRegressions() {
@@ -271,23 +302,17 @@ export class RegressionAnalysis implements OnInit, OnChanges {
     
     const ratingMultipleData = this.filteredMovies
       .map((m: Movie) => {
-        const budget = Number(m.budget) || 0;
-        const revenue = Number(m.revenue) || 0;
-        if (budget <= 0) return null;
+        const critic = Number(m.tomatometer_rating) || Number(m.metascore) || null;
+        const audience = Number(m.audience_rating) || Number(m.vote_average_100) || null;
 
-        const multiple = (revenue - budget) / budget;
-        const scores = [
-          Number(m.vote_average_100) || 0,
-          Number(m.audience_rating) || 0,
-          Number(m.letterbox_rating) || 0,
-        ].filter((v) => v > 0);
-
-        if (scores.length === 0) return null;
-        return {
-          x: scores.reduce((a, b) => a + b, 0) / scores.length,
-          y: multiple,
-          movieContext: m,
-        };
+        if (critic && audience) {
+          return {
+            x: critic,
+            y: audience,
+            movieContext: m,
+          };
+        }
+        return null;
       })
       .filter((d) => d !== null) as DataPoint[];
 
@@ -325,12 +350,11 @@ export class RegressionAnalysis implements OnInit, OnChanges {
     const budgetMultipleData = this.filteredMovies
       .map((m: Movie) => {
         const budget = Number(m.budget);
-        const revenue = Number(m.revenue);
+        const votes = Number(m.vote_count);
 
         if (isFinite(budget) && budget > 0) {
-          const rev = isFinite(revenue) ? revenue : 0;
-          const multiple = rev / budget;
-          return { x: budget / 1000000, y: multiple, movieContext: m };
+          const v = isFinite(votes) && votes > 0 ? votes : 1;
+          return { x: budget / 1000000, y: v, movieContext: m };
         }
         return null;
       })

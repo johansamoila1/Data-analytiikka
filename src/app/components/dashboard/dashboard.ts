@@ -316,6 +316,8 @@ export class Dashboard implements OnInit {
       }
 
       const budget = Number(m.budget) || 0;
+      const revenue = Number(m.revenue) || 0;
+      if (revenue < 10000) return false;
       if (minBudget > 0 && budget > 0 && budget < minBudget) return false;
       if (maxBudget != null && budget > 0 && budget > maxBudget) return false;
 
@@ -350,6 +352,8 @@ export class Dashboard implements OnInit {
       }
 
       const budget = Number(m.budget) || 0;
+      const revenue = Number(m.revenue) || 0;
+      if (revenue < 10000) return false;
       if (minBudget > 0 && budget > 0 && budget < minBudget) return false;
       if (maxBudget != null && budget > 0 && budget > maxBudget) return false;
 
